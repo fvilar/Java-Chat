@@ -1,0 +1,6 @@
+*.jar
+*.db
+*/build/
+*private
+*.class
+*/dist/
