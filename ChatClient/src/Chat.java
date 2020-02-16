@@ -22,18 +22,31 @@ public class Chat extends javax.swing.JFrame {
     /**
      * Creates new form Chat
      */
-    public Chat() {      
-        nombre = "Kevin";
-        initComponents();        
-        try{            
-                msg = "+,"+nombre;                                
+    public Chat() {initComponents();}
+    public Chat(String nombre) {             
+        initComponents();                
+        Chat.nombre = nombre;
+        
+         Runtime.getRuntime().addShutdownHook(new Thread(){
+             
+             @Override
+             public void run(){
+             try{
+                msg = "-,"+nombre;                                
                 s = new Socket("127.0.0.1",2000);        
                 out = new DataOutputStream(s.getOutputStream());                        
-                out.writeUTF(msg);                        
-                s.close();            
-                out.close();            
+                out.writeUTF(msg);    
+                out.close();
+                s.close();                                            
+                
+                
             
         }catch(Exception e){System.out.println(e.toString());}
+             
+             }
+         
+         
+         });
         
     }
     public void send(){
@@ -44,14 +57,16 @@ public class Chat extends javax.swing.JFrame {
                 jTextField1.setText("");
                 s = new Socket("127.0.0.1",2000);        
                 out = new DataOutputStream(s.getOutputStream());                        
-                out.writeUTF(msg);                        
-                s.close();            
+                out.writeUTF(msg);                                                
                 out.close();
+                s.close();    
             }
             
         }catch(Exception e){System.out.println(e.toString());}
     
     }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -154,31 +169,7 @@ public class Chat extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {                
-    Runtime runtime = Runtime.getRuntime();
-    runtime.addShutdownHook(new Thread()
-    {
-        @Override
-        public void run(){
-            try{                            
-                DataOutputStream out1;
-                try (Socket s1 = new Socket("127.0.0.1",2000)) {
-                    out1 = new DataOutputStream(s1.getOutputStream());
-                    String msg1 = "-,"+nombre;
-                    out1.writeUTF(msg1);            
-                    s1.close();
-                }
-                out1.close(); 
-                
-            
-        }catch(Exception e){System.out.println(e.toString());}
-        
-        
-        }
-    
-    });
-        
-        
+    public static void main(String args[]) {                                    
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

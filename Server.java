@@ -33,6 +33,7 @@ public class Server {
 }
 
 class Hilo extends Thread{        
+        private LinkedList db;
         private Socket s = null;        
         private DataOutputStream out;
         private DataInputStream in;
@@ -44,6 +45,8 @@ class Hilo extends Thread{
         this.s = s;        
         this.msgs = msgs;
         this.clients = clients;
+        this.db = new LinkedList();
+        this.db.add("admin$admin");
     }
     
     @Override
@@ -66,12 +69,26 @@ class Hilo extends Thread{
                 }
                 
             }else if(msg.charAt(0)=='+'){
-                tk = new StringTokenizer(msg,",");            
+                tk = new StringTokenizer(msg,",");                            
                 tk.nextToken();
-                clients.add(tk.nextToken());
+                msg = tk.nextToken();                
+                if(msg.equals(db.get(db.indexOf(msg)))){
+                    tk = new StringTokenizer(msg,"$");
+                    msg = tk.nextToken();
+                    System.out.println(msg);
+                    if(clients.indexOf(msg)==-1){
+                        clients.add(msg);                
+                        msg="OK";
+                    }else{
+                        msg="Ese usuario ya esta conectado";
+                    }                    
+                }else{
+                    msg="Usuario o contraseña incorrectos";
+                }                
+                
             }else if(msg.charAt(0)=='-'){
                 tk = new StringTokenizer(msg,",");            
-                tk.nextToken();
+                tk.nextToken();                
                 clients.remove(tk.nextToken());            
                 
             }else{
@@ -88,6 +105,5 @@ class Hilo extends Thread{
         }catch(Exception e){
             System.out.println(e.toString());                        
         }        
-        return;
     }
 }
