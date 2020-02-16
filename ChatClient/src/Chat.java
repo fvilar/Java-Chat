@@ -13,22 +13,33 @@ import java.net.*;
 import java.util.*;
 import java.io.*;
 
-public class Chat extends javax.swing.JFrame {
+public class Chat extends javax.swing.JFrame {            
         
-    Socket s;    
-    DataOutputStream out;    
-    String msg;
+    private Socket s;    
+    private DataOutputStream out;    
+    private String msg;
+    private static String nombre;
     /**
      * Creates new form Chat
      */
-    public Chat() {
-        
+    public Chat() {      
+        nombre = "Kevin";
         initComponents();        
+        try{            
+                msg = "+,"+nombre;                                
+                s = new Socket("127.0.0.1",2000);        
+                out = new DataOutputStream(s.getOutputStream());                        
+                out.writeUTF(msg);                        
+                s.close();            
+                out.close();            
+            
+        }catch(Exception e){System.out.println(e.toString());}
+        
     }
     public void send(){
     try{
             if(jTextField1.getText().length()!=0){
-                msg = "Kevin: ";
+                msg = nombre+": ";
                 msg+=jTextField1.getText();   
                 jTextField1.setText("");
                 s = new Socket("127.0.0.1",2000);        
@@ -143,7 +154,31 @@ public class Chat extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) {                
+    Runtime runtime = Runtime.getRuntime();
+    runtime.addShutdownHook(new Thread()
+    {
+        @Override
+        public void run(){
+            try{                            
+                DataOutputStream out1;
+                try (Socket s1 = new Socket("127.0.0.1",2000)) {
+                    out1 = new DataOutputStream(s1.getOutputStream());
+                    String msg1 = "-,"+nombre;
+                    out1.writeUTF(msg1);            
+                    s1.close();
+                }
+                out1.close(); 
+                
+            
+        }catch(Exception e){System.out.println(e.toString());}
+        
+        
+        }
+    
+    });
+        
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

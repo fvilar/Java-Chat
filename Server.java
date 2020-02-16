@@ -12,9 +12,7 @@ public class Server {
             ServerSocket ss = null;
             Socket s = null;            
             msgs = new LinkedList(); 
-            clients = new LinkedList();
-            clients.add("Kevin");
-            clients.add("Pruebita");
+            clients = new LinkedList();            
             String msg;            
 		try{
 			ss = new ServerSocket(2000,20);                           
@@ -66,6 +64,15 @@ class Hilo extends Thread{
                 for(int i = 0; i < clients.size();i++){
                   this.msg += clients.get(i)+"\n";    
                 }
+                
+            }else if(msg.charAt(0)=='+'){
+                tk = new StringTokenizer(msg,",");            
+                tk.nextToken();
+                clients.add(tk.nextToken());
+            }else if(msg.charAt(0)=='-'){
+                tk = new StringTokenizer(msg,",");            
+                tk.nextToken();
+                clients.remove(tk.nextToken());            
                 
             }else{
                 msgs.add(msg);
