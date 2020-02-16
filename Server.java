@@ -6,11 +6,15 @@ import java.io.*;
 public class Server {
 	        
         private static LinkedList msgs;
+        private static LinkedList clients;
 	public static void main(String Args[]){
             
             ServerSocket ss = null;
             Socket s = null;            
             msgs = new LinkedList(); 
+            clients = new LinkedList();
+            clients.add("Kevin");
+            clients.add("Pruebita");
             String msg;            
 		try{
 			ss = new ServerSocket(2000,20);                           
@@ -18,7 +22,7 @@ public class Server {
                         while(true){                            
                             s = ss.accept();                                          
                             if(s.isConnected()){                                
-                                (new Hilo(s,msgs)).start();                                
+                                (new Hilo(s,msgs,clients)).start();                                
                             }
                         }
 
@@ -35,12 +39,13 @@ class Hilo extends Thread{
         private DataOutputStream out;
         private DataInputStream in;
         private LinkedList msgs;            
+        private LinkedList clients;            
         private StringTokenizer tk;
         String msg;
-    public Hilo(Socket s,LinkedList msgs){        
+    public Hilo(Socket s,LinkedList msgs,LinkedList clients){        
         this.s = s;        
         this.msgs = msgs;
-        
+        this.clients = clients;
     }
     
     @Override
@@ -56,6 +61,12 @@ class Hilo extends Thread{
                 for(int i = 0; i < msgs.size();i++){
                   this.msg += msgs.get(i)+"\n";    
                 }                    
+            }else if(msg.charAt(0)=='*'){
+                this.msg = "";
+                for(int i = 0; i < clients.size();i++){
+                  this.msg += clients.get(i)+"\n";    
+                }
+                
             }else{
                 msgs.add(msg);
                 System.out.println(msg+"    ."+s.getInetAddress().toString());
