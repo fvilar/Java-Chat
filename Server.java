@@ -19,13 +19,13 @@ public class Server {
                             s = ss.accept();              
                             
                             if(s.isConnected()){
-                                in = new DataInputStream(s.getInputStream());
-                                System.out.println("msg from: "+s.getInetAddress());
+                                in = new DataInputStream(s.getInputStream());                                
                                 msg = in.readUTF();                                
                                 if(msg.charAt(0)=='?'){                                
                                     
                                 }else{
                                     msgs.add(msg);
+                                    System.out.println(msg+"    ."+s.getInetAddress().toString());
                                 }
                                 (new Hilo(s,msgs)).start();                                
                             }
