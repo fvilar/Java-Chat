@@ -47,6 +47,8 @@ class Hilo extends Thread{
         this.clients = clients;
         this.db = new LinkedList();
         this.db.add("admin$admin");
+        this.db.add("Kevin$123");
+        this.db.add("Ileana$1234gaby");
     }
     
     @Override
@@ -71,14 +73,16 @@ class Hilo extends Thread{
             }else if(msg.charAt(0)=='+'){
                 tk = new StringTokenizer(msg,",");                            
                 tk.nextToken();
-                msg = tk.nextToken();                
-                if(msg.equals(db.get(db.indexOf(msg)))){
+                msg = tk.nextToken();
+                if(db.indexOf(msg)!=-1){                
                     tk = new StringTokenizer(msg,"$");
-                    msg = tk.nextToken();
-                    System.out.println(msg);
+                    msg = tk.nextToken();                    
                     if(clients.indexOf(msg)==-1){
                         clients.add(msg);                
-                        msg="OK";
+                        msg = msg+" se ha conectado desde " + s.getInetAddress();
+                        msgs.add(msg);
+                        System.out.println(msg);                        
+                        msg="OK";                        
                     }else{
                         msg="Ese usuario ya esta conectado";
                     }                    
@@ -89,7 +93,12 @@ class Hilo extends Thread{
             }else if(msg.charAt(0)=='-'){
                 tk = new StringTokenizer(msg,",");            
                 tk.nextToken();                
-                clients.remove(tk.nextToken());            
+                msg = tk.nextToken();
+                clients.remove(msg);
+                msg = msg+" se ha desconectado ";
+                System.out.println(msg);
+                msgs.add(msg);
+                this.msg = "";
                 
             }else{
                 msgs.add(msg);

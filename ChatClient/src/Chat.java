@@ -19,21 +19,24 @@ public class Chat extends javax.swing.JFrame {
     private DataOutputStream out;    
     private String msg;
     private static String nombre;
+    private String ip;
+    private int port;
     /**
      * Creates new form Chat
      */
     public Chat() {initComponents();}
-    public Chat(String nombre) {             
+    public Chat(String nombre,String ip,int port) {             
         initComponents();                
         Chat.nombre = nombre;
-        
+        this.ip = ip;
+        this.port = port;        
          Runtime.getRuntime().addShutdownHook(new Thread(){
              
              @Override
              public void run(){
              try{
                 msg = "-,"+nombre;                                
-                s = new Socket("127.0.0.1",2000);        
+                s = new Socket(ip,port);        
                 out = new DataOutputStream(s.getOutputStream());                        
                 out.writeUTF(msg);    
                 out.close();
@@ -55,7 +58,7 @@ public class Chat extends javax.swing.JFrame {
                 msg = nombre+": ";
                 msg+=jTextField1.getText();   
                 jTextField1.setText("");
-                s = new Socket("127.0.0.1",2000);        
+                s = new Socket(this.ip,this.port);        
                 out = new DataOutputStream(s.getOutputStream());                        
                 out.writeUTF(msg);                                                
                 out.close();
@@ -152,6 +155,7 @@ public class Chat extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
