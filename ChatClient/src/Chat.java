@@ -51,6 +51,7 @@ public class Chat extends javax.swing.JFrame {
          
          
          });
+        
         (new Thread(this.jTextArea1)).start();
         (new Thread(this.jTextArea2)).start();
         

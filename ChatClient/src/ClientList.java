@@ -32,6 +32,7 @@ public class ClientList extends javax.swing.JTextArea implements Runnable{
                 out.writeUTF("*");
                 in = new DataInputStream(s.getInputStream());                                
                 this.setText(in.readUTF());
+                Thread.sleep(5000);
             }catch(Exception e){System.out.println(e.toString());}
         }                
     }

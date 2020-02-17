@@ -23,7 +23,7 @@ public class Mensajes extends javax.swing.JTextArea implements Runnable{
     public Mensajes(){}
     public Mensajes(String ip, int port){        
         this.ip = ip;
-        this.port = port;                       
+        this.port = port;         
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Mensajes extends javax.swing.JTextArea implements Runnable{
                 out.writeUTF("?");
                 in = new DataInputStream(s.getInputStream());                                
                 this.setText(in.readUTF());
-
+                Thread.sleep(1000);
             }catch(Exception e){System.out.println(this.ip+":"+this.port+e.toString());}
         }
     }

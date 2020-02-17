@@ -15,7 +15,7 @@ public class Server {
             clients = new LinkedList();            
             String msg;            
 		try{
-			ss = new ServerSocket(2000,20);                           
+			ss = new ServerSocket(2000);                           
                         System.out.println("Server running on port: "+ss.getLocalPort());                                                
                         while(true){                            
                             s = ss.accept();                                          
@@ -47,7 +47,7 @@ class Hilo extends Thread{
         this.clients = clients;
         this.db = new LinkedList();
         this.db.add("admin$admin");
-        this.db.add("Kevin$123");
+        this.db.add("Kevin$123");   
         this.db.add("Ileana$1234gaby");
     }
     
