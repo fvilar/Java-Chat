@@ -16,16 +16,18 @@ public class ClientList extends javax.swing.JTextArea implements Runnable{
     private Socket s;
     private DataOutputStream out;
     private DataInputStream in;  
-    
-    public ClientList(){
-      Thread t = new Thread(this);   
-      t.start();
+    private int port;
+    private String ip;
+    public ClientList(){}
+    public ClientList(String ip, int port){
+      this.port = port;
+      this.ip=ip;            
     }
     @Override
     public void run() {
         while(true){
             try{
-                s = new Socket("127.0.0.1",2000);        
+                s = new Socket(this.ip,this.port);        
                 out = new DataOutputStream(s.getOutputStream());
                 out.writeUTF("*");
                 in = new DataInputStream(s.getInputStream());                                

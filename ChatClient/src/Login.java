@@ -17,6 +17,8 @@ public class Login extends javax.swing.JFrame {
     private DataOutputStream out;    
     private DataInputStream in; 
     private String msg;    
+    private String ip;
+    private int port;
 
     /**
      * Creates new form Login
@@ -137,12 +139,14 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{            
                 msg = "+,"+this.jTextField1.getText()+"$"+this.jPasswordField1.getText();                                
-                s = new Socket("127.0.0.1",2000);        
+                this.ip = jTextField2.getText();
+                this.port = Integer.parseInt(jTextField3.getText());
+                s = new Socket(this.ip,this.port);        
                 out = new DataOutputStream(s.getOutputStream()); 
                 in = new DataInputStream(s.getInputStream());
                 out.writeUTF(msg);                        
                 if(in.readUTF().equals("OK")){
-                    Chat c = new Chat(this.jTextField1.getText(),jTextField2.getText(),Integer.parseInt(jTextField3.getText()));
+                    Chat c = new Chat(this.jTextField1.getText(),this.ip,this.port);
                     c.show();
                     this.dispose();                    
                 }

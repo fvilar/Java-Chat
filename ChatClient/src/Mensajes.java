@@ -16,23 +16,27 @@ import java.io.*;
 public class Mensajes extends javax.swing.JTextArea implements Runnable{
     private Socket s;
     private DataOutputStream out;
-    private DataInputStream in;    
-    public Mensajes(){        
-        Thread t = new Thread(this);
-        t.start();
+    private DataInputStream in; 
+    private String ip;
+    private int port;
+    
+    public Mensajes(){}
+    public Mensajes(String ip, int port){        
+        this.ip = ip;
+        this.port = port;                       
     }
 
     @Override
     public void run() {
         while(true){
             try{
-                s = new Socket("127.0.0.1",2000);        
+                s = new Socket(this.ip,this.port);        
                 out = new DataOutputStream(s.getOutputStream());
                 out.writeUTF("?");
                 in = new DataInputStream(s.getInputStream());                                
                 this.setText(in.readUTF());
 
-            }catch(Exception e){System.out.println(e.toString());}
+            }catch(Exception e){System.out.println(this.ip+":"+this.port+e.toString());}
         }
     }
 }

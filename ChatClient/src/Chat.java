@@ -26,10 +26,11 @@ public class Chat extends javax.swing.JFrame {
      */
     public Chat() {initComponents();}
     public Chat(String nombre,String ip,int port) {             
-        initComponents();                
-        Chat.nombre = nombre;
         this.ip = ip;
-        this.port = port;        
+        this.port = port;
+        Chat.nombre = nombre;                
+        
+        initComponents();                        
          Runtime.getRuntime().addShutdownHook(new Thread(){
              
              @Override
@@ -50,6 +51,8 @@ public class Chat extends javax.swing.JFrame {
          
          
          });
+        (new Thread(this.jTextArea1)).start();
+        (new Thread(this.jTextArea2)).start();
         
     }
     public void send(){
@@ -81,10 +84,10 @@ public class Chat extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new Mensajes();
+        jTextArea1 = new Mensajes(this.ip,this.port);
         jTextField1 = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new ClientList();
+        jTextArea2 = new ClientList(this.ip,this.port);
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
