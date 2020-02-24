@@ -4,3 +4,7 @@
 *private
 *.class
 */dist/
+*/org/
+*/native
+*/META-INF
+!sqlite-jdbc-3.7.2.jar
