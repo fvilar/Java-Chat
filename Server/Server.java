@@ -16,7 +16,7 @@ public class Server {
         
 	public static void main(String Args[]){
                                 
-            db = new OperacionesDB("base.db");            
+            db = new OperacionesDB("base.db");               
             ServerSocket ss = null;
             Socket s = null;            
             msgs = new LinkedList(); 
@@ -41,22 +41,19 @@ public class Server {
 }
 
 class Hilo extends Thread{        
-        private LinkedList db;
+        
         private Socket s = null;        
         private DataOutputStream out;
         private DataInputStream in;
         private LinkedList msgs;            
         private LinkedList clients;            
         private StringTokenizer tk;
+        private static OperacionesDB db;
         String msg;
     public Hilo(Socket s,LinkedList msgs,LinkedList clients){        
         this.s = s;        
         this.msgs = msgs;
-        this.clients = clients;
-        this.db = new LinkedList();
-        this.db.add("admin$admin");
-        this.db.add("Kevin$123");   
-        this.db.add("Ileana$1234gaby");
+        this.clients = clients;        
     }
     
     @Override
@@ -81,11 +78,14 @@ class Hilo extends Thread{
             }else if(msg.charAt(0)=='+'){
                 tk = new StringTokenizer(msg,",");                            
                 tk.nextToken();
+                msg = tk.nextToken();                
+                tk = new StringTokenizer(msg,"$");                
                 msg = tk.nextToken();
-                if(db.indexOf(msg)!=-1){                
-                    tk = new StringTokenizer(msg,"$");
-                    msg = tk.nextToken();                    
+                db = new OperacionesDB("base.db");
+                if(db.CheckUser(msg,tk.nextToken())){                                                        
+                    
                     if(clients.indexOf(msg)==-1){
+                        
                         clients.add(msg);                
                         msg = msg+" se ha conectado desde " + s.getInetAddress();
                         msgs.add(msg);
