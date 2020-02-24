@@ -31,12 +31,13 @@ public class OperacionesDB{
                 st.executeQuery(sql);
                 System.out.println("DataBase opened successfully");
                 
-                con.commit();
-                st.close();
-                con.close();
+                con.commit();                
             }        
         }catch(Exception e){System.out.println(e.toString());}
-        
+        try{            
+            st.close();
+            con.close();
+        }catch(Exception e){System.out.println(e.toString());}
     }
     
     
@@ -59,14 +60,14 @@ public class OperacionesDB{
             rs = st.executeQuery(sql);
             if(rs.next()){
                 res = true;
-            }
-            
-        con.commit();
-        rs.close();
-        st.close();
-        con.close();
+            }            
+        con.commit();        
+        }catch(Exception e){System.out.println(e.toString());}        
+        try{
+            rs.close();
+            st.close();
+            con.close();
         }catch(Exception e){System.out.println(e.toString());}
-        
         return res;
     
     }
@@ -79,11 +80,13 @@ public class OperacionesDB{
             st.executeUpdate(sql);
             con.commit();
             res = true;                        
+                        
+        }catch(Exception e){if(e.toString().equals("java.sql.SQLException: column name is not unique")){System.out.println(e.toString());System.out.println("Ese nombre de usuario ya existe");}}    
             
+        try{
             st.close();
-            con.close();
-        }catch(Exception e){System.out.println(e.toString());}    
-            
+            con.close();        
+        }catch(Exception e){System.out.println(e.toString());}
         return res;
     
     }

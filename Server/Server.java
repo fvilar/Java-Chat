@@ -7,16 +7,47 @@ import java.util.*;
 import java.io.*;
 
 
-public class Server {
+public class Server extends Thread{
 	        
         private static LinkedList msgs;
         private static LinkedList clients;
-        private static OperacionesDB db;
+        private static OperacionesDB db;        
         
+        public Server(){
+            db = new OperacionesDB("base.db");
+        }        
+	public static void main(String Args[]){    
+            BufferedReader rf = new BufferedReader(new InputStreamReader(System.in));
+            String comm = "";
+            StringTokenizer lk;
+            Server h = new Server();
+            h.start();            
+            while(true){                
+                try{
+                    comm=rf.readLine();
+                    lk = new StringTokenizer(comm," ");
+                    if(!comm.equals("")){
+                        if(lk.countTokens()==1){
+                            if(comm.equals("cls")){
+                               new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                            }
+                            else{System.out.println("Comando desconocido");}
+                        }
+                        else if(lk.countTokens()==4){
+                            if(lk.nextToken().equals("create")&&lk.nextToken().equals("user")){                                
+                                System.out.println(db.CreateUser(lk.nextToken(),lk.nextToken()));
+                            }
+                            else if(lk.nextToken().equals("delete")&&lk.nextToken().equals("user")){}
+                            else System.out.println("Comando desconocido");
+                        }
+                        else{System.out.println("Comando desconocido");}
+                    }
+                    }catch(Exception e){System.out.println(e.toString());}
+            }
+	}                
         
-	public static void main(String Args[]){
-                                
-            db = new OperacionesDB("base.db");               
+        @Override
+        public void run(){                     
             ServerSocket ss = null;
             Socket s = null;            
             msgs = new LinkedList(); 
@@ -28,16 +59,15 @@ public class Server {
                         while(true){                            
                             s = ss.accept();                                          
                             if(s.isConnected()){                                
-                                (new Hilo(s,msgs,clients)).start();                                
+                                (new Hilo(s,msgs,clients,db)).start();                                
                             }
                         }
 
 		}catch(Exception e){
                     System.out.println(e.toString());
             }
-
-	}                        
-
+        }
+        
 }
 
 class Hilo extends Thread{        
@@ -50,10 +80,11 @@ class Hilo extends Thread{
         private StringTokenizer tk;
         private static OperacionesDB db;
         String msg;
-    public Hilo(Socket s,LinkedList msgs,LinkedList clients){        
+    public Hilo(Socket s,LinkedList msgs,LinkedList clients,OperacionesDB db){        
         this.s = s;        
         this.msgs = msgs;
-        this.clients = clients;        
+        this.clients = clients;      
+        this.db = db;
     }
     
     @Override
@@ -80,8 +111,7 @@ class Hilo extends Thread{
                 tk.nextToken();
                 msg = tk.nextToken();                
                 tk = new StringTokenizer(msg,"$");                
-                msg = tk.nextToken();
-                db = new OperacionesDB("base.db");
+                msg = tk.nextToken();                
                 if(db.CheckUser(msg,tk.nextToken())){                                                        
                     
                     if(clients.indexOf(msg)==-1){
