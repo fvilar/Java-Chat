@@ -71,6 +71,29 @@ public class OperacionesDB{
         return res;
     
     }
+    public String GetUsers(){
+        String res = "\n\n Usuarios Registrados \n";
+        res += "\nUserName\tPassword\n";
+        con = connect();
+        sql = "select * from users;";
+        try{
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()){
+                res+=rs.getString("name")+"\t\t";
+                res+=rs.getString("password")+"\n";
+            }            
+        con.commit();        
+        }catch(Exception e){System.out.println(e.toString());}        
+        try{
+            rs.close();
+            st.close();
+            con.close();
+        }catch(Exception e){System.out.println(e.toString());}
+        res+="\n\n";
+        return res;
+    
+    }
     public boolean CreateUser(String name, String pass){
         boolean res = false;
         con = connect();

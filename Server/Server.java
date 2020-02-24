@@ -40,6 +40,26 @@ public class Server extends Thread{
                             else if(lk.nextToken().equals("delete")&&lk.nextToken().equals("user")){}
                             else System.out.println("Comando desconocido");
                         }
+                        else if(lk.countTokens()==2){
+                            if(lk.nextToken().equals("users")&&lk.nextToken().equals("list")){                                
+                                System.out.println(db.GetUsers());
+                            }                            
+                            else System.out.println("Comando desconocido");
+                        }
+                        else if(lk.countTokens()==3){
+                            if(lk.nextToken().equals("users")&&lk.nextToken().equals("list")&&lk.nextToken().equals("-c")){                                
+                                if(clients.size()!=0){
+                                    System.out.println("\n\n Usuarios Conectados\n\n");
+                                    for(int i=0;i<clients.size();i++){                                        
+                                        System.out.println(clients.get(i));
+                                    }
+                                }
+                                else{
+                                        System.out.println("\nNo hay usuarios conectados\n");
+                                }
+                            }                            
+                            else System.out.println("Comando desconocido");
+                        }
                         else{System.out.println("Comando desconocido");}
                     }
                     }catch(Exception e){System.out.println(e.toString());}
