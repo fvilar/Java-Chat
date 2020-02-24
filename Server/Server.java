@@ -1,14 +1,22 @@
 
+
+
+
 import java.net.*;
 import java.util.*;
 import java.io.*;
+
 
 public class Server {
 	        
         private static LinkedList msgs;
         private static LinkedList clients;
+        private static OperacionesDB db;
+        
+        
 	public static void main(String Args[]){
-            
+                                
+            db = new OperacionesDB("base.db");            
             ServerSocket ss = null;
             Socket s = null;            
             msgs = new LinkedList(); 

@@ -1,4 +1,6 @@
 @echo off
+javac OperacionesDB.java
 javac Server.java
-cls
+
+
 java Server
