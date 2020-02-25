@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 
 public class Server extends Thread{
 	        
-        private static LinkedList msgs;
-        private static LinkedList clients;
+        private static LinkedList<String> msgs;
+        private static LinkedList<String> clients;
         private static OperacionesDB db;  
         private static ServerSocket ss = null;
         private static Socket s = null;
@@ -27,7 +27,7 @@ public class Server extends Thread{
             BufferedReader rf = new BufferedReader(new InputStreamReader(System.in));
             String comm = "";
             StringTokenizer lk;
-            LinkedList ls = new LinkedList();
+            LinkedList<String> ls = new LinkedList<>();
             Server h = new Server();
             h.start();            
             while(true){                
@@ -109,8 +109,8 @@ public class Server extends Thread{
         
         @Override
         public void run(){                                             
-            msgs = new LinkedList(); 
-            clients = new LinkedList();            
+            msgs = new LinkedList<>(); 
+            clients = new LinkedList<>();            
             String msg;                        
 		try{
 			ss = new ServerSocket(2000);                           
@@ -134,12 +134,12 @@ class Hilo extends Thread{
         private Socket s = null;        
         private DataOutputStream out;
         private DataInputStream in;
-        private LinkedList msgs;            
-        private LinkedList clients;            
+        private LinkedList<String> msgs;            
+        private LinkedList<String> clients;            
         private StringTokenizer tk;
         private static OperacionesDB db;
         String msg;
-    public Hilo(Socket s,LinkedList msgs,LinkedList clients,OperacionesDB db){        
+    public Hilo(Socket s,LinkedList<String> msgs,LinkedList<String> clients,OperacionesDB db){        
         this.s = s;        
         this.msgs = msgs;
         this.clients = clients;      
