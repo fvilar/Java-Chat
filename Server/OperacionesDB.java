@@ -1,4 +1,7 @@
-
+/*
+©2020.Todos los derechos reservados.
+Autor: Kevin Fondevila
+*/
 import java.sql.*;
 import java.io.*;
 

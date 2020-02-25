@@ -1,4 +1,7 @@
-
+/*
+©2020.Todos los derechos reservados.
+Autor: Kevin Fondevila
+*/
 
 
 
@@ -49,6 +52,20 @@ public class Server extends Thread{
                                 }catch (Exception e) {
                                     System.out.println(e.toString());
                                 }
+                            }
+                            else if(comm.equals("help")){
+                                System.out.println("\n\nCommand List\n--------------------------------------------\n");
+                                System.out.println("cls: Limpia la pantalla");
+                                System.out.println("create user [UserName] [Password]: Crea un nuevo usuario con su contraseña");
+                                System.out.println("delete user [UserName]: Elimina a un usuario de la base de datos");
+                                System.out.println("delete users: Elimina a todos los usuarios de la base de datos");
+                                System.out.println("users list: Optiene una lista de todos los usuarios registrados en la base de datos con su respectiva contraseña");
+                                System.out.println("users list -c: Optiene una lista de todos los usuarios conectados al servidor");
+                                System.out.println("restart: Reinicia el servidor");                                
+                                System.out.println("help: Muestra una lista de todos los comandos disponibles\n\n");
+                                
+                            
+                            
                             }
                             else{System.out.println("Comando desconocido");}
                         }
