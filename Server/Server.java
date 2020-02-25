@@ -5,13 +5,17 @@
 import java.net.*;
 import java.util.*;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Server extends Thread{
 	        
         private static LinkedList msgs;
         private static LinkedList clients;
-        private static OperacionesDB db;        
+        private static OperacionesDB db;  
+        private static ServerSocket ss = null;
+        private static Socket s = null;
         
         public Server(){
             db = new OperacionesDB("base.db");
@@ -20,6 +24,7 @@ public class Server extends Thread{
             BufferedReader rf = new BufferedReader(new InputStreamReader(System.in));
             String comm = "";
             StringTokenizer lk;
+            LinkedList ls = new LinkedList();
             Server h = new Server();
             h.start();            
             while(true){                
@@ -27,27 +32,43 @@ public class Server extends Thread{
                     comm=rf.readLine();
                     lk = new StringTokenizer(comm," ");
                     if(!comm.equals("")){
-                        if(lk.countTokens()==1){
+                        ls.clear();
+                        while(lk.hasMoreTokens()){ls.add(lk.nextToken());}                          
+                        if(ls.size()==1){
                             if(comm.equals("cls")){
                                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                             }
+                            else if(comm.equals("restart")){
+                                try{                                    
+                                    h.interrupt();
+                                    ss.close();                                                                        
+                                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                                    new ProcessBuilder("cmd", "/c", "Server.bat").inheritIO().start().waitFor();
+                                    System.exit(1);
+                                    
+                                }catch (Exception e) {
+                                    System.out.println(e.toString());
+                                }
+                            }
                             else{System.out.println("Comando desconocido");}
                         }
-                        else if(lk.countTokens()==4){
-                            if(lk.nextToken().equals("create")&&lk.nextToken().equals("user")){                                
-                                System.out.println(db.CreateUser(lk.nextToken(),lk.nextToken()));
-                            }
-                            else if(lk.nextToken().equals("delete")&&lk.nextToken().equals("user")){}
-                            else System.out.println("Comando desconocido");
-                        }
-                        else if(lk.countTokens()==2){
-                            if(lk.nextToken().equals("users")&&lk.nextToken().equals("list")){                                
-                                System.out.println(db.GetUsers());
+                        else if(ls.size()==4){                            
+                            if(ls.get(0).toString().equals("create")&&ls.get(1).toString().equals("user")){                                
+                                System.out.println(db.CreateUser(ls.get(2).toString(),ls.get(3).toString()));
                             }                            
                             else System.out.println("Comando desconocido");
                         }
-                        else if(lk.countTokens()==3){
-                            if(lk.nextToken().equals("users")&&lk.nextToken().equals("list")&&lk.nextToken().equals("-c")){                                
+                        else if(ls.size()==2){
+                            if(ls.get(0).toString().equals("users")&&ls.get(1).toString().equals("list")){                         
+                                System.out.println(db.GetUsers());
+                            }
+                            else if(ls.get(0).toString().equals("delete")&&ls.get(1).toString().equals("users")){                                
+                                System.out.println(db.DeleteUsers());
+                            }
+                            else System.out.println("Comando desconocido");
+                        }
+                        else if(ls.size()==3){
+                            if(ls.get(0).toString().equals("users")&&ls.get(1).toString().equals("list")&&ls.get(2).toString().equals("-c")){                                
                                 if(clients.size()!=0){
                                     System.out.println("\n\n Usuarios Conectados\n\n");
                                     for(int i=0;i<clients.size();i++){                                        
@@ -57,7 +78,10 @@ public class Server extends Thread{
                                 else{
                                         System.out.println("\nNo hay usuarios conectados\n");
                                 }
-                            }                            
+                            }
+                            else if(ls.get(0).toString().equals("delete")&&ls.get(1).toString().equals("user")){                                
+                                System.out.println(db.DeleteUser(ls.get(2).toString()));
+                            }
                             else System.out.println("Comando desconocido");
                         }
                         else{System.out.println("Comando desconocido");}
@@ -67,16 +91,14 @@ public class Server extends Thread{
 	}                
         
         @Override
-        public void run(){                     
-            ServerSocket ss = null;
-            Socket s = null;            
+        public void run(){                                             
             msgs = new LinkedList(); 
             clients = new LinkedList();            
-            String msg;            
+            String msg;                        
 		try{
 			ss = new ServerSocket(2000);                           
                         System.out.println("Server running on port: "+ss.getLocalPort());                                                
-                        while(true){                            
+                        while(!Thread.interrupted()){                              
                             s = ss.accept();                                          
                             if(s.isConnected()){                                
                                 (new Hilo(s,msgs,clients,db)).start();                                
@@ -86,9 +108,9 @@ public class Server extends Thread{
 		}catch(Exception e){
                     System.out.println(e.toString());
             }
-        }
-        
+        }        
 }
+
 
 class Hilo extends Thread{        
         

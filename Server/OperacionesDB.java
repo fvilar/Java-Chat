@@ -74,6 +74,7 @@ public class OperacionesDB{
     public String GetUsers(){
         String res = "\n\n Usuarios Registrados \n";
         res += "\nUserName\tPassword\n";
+        res += "-------------------------------------\n\n";
         con = connect();
         sql = "select * from users;";
         try{
@@ -110,9 +111,43 @@ public class OperacionesDB{
             st.close();
             con.close();        
         }catch(Exception e){System.out.println(e.toString());}
-        return res;
-    
+        return res;    
     }
-    
+    public boolean DeleteUser(String name){
+        boolean res = false;
+        con = connect();        
+        sql = "delete from users where name='"+name+"';";
+        try{
+            st = con.createStatement();
+            st.executeUpdate(sql);
+            con.commit();
+            res = true;                        
+                        
+        }catch(Exception e){if(e.toString().equals("java.sql.SQLException: column name is not unique")){System.out.println(e.toString());System.out.println("Ese nombre de usuario ya existe");}}    
+            
+        try{
+            st.close();
+            con.close();        
+        }catch(Exception e){System.out.println(e.toString());}
+        return res;    
+    }
+    public boolean DeleteUsers(){
+        boolean res = false;
+        con = connect();        
+        sql = "delete from users;";
+        try{
+            st = con.createStatement();
+            st.executeUpdate(sql);
+            con.commit();
+            res = true;                        
+                        
+        }catch(Exception e){if(e.toString().equals("java.sql.SQLException: column name is not unique")){System.out.println(e.toString());System.out.println("Ese nombre de usuario ya existe");}}    
+            
+        try{
+            st.close();
+            con.close();        
+        }catch(Exception e){System.out.println(e.toString());}
+        return res;    
+    }
     
 }
