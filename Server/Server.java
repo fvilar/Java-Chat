@@ -182,7 +182,7 @@ class Hilo extends Thread{
                 
             }else{
                 msgs.add(msg);
-                System.out.println(msg+"    ."+s.getInetAddress().toString());
+                //System.out.println(msg+"    ."+s.getInetAddress().toString());
             }
             out = new DataOutputStream(s.getOutputStream());                                    
             out.writeUTF(msg);  
