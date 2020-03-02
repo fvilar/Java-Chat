@@ -2,7 +2,7 @@
 
 Ejemplo de como crear un chat en java utilizando sockets
 
-## Installation
+## Instalacion
 ### Server
 
 * Descomprime el **.jar** llamado **sqlite-jdbc-3.7.2.jar**.
@@ -17,7 +17,7 @@ Ejemplo de como crear un chat en java utilizando sockets
 * Debería llamarse ChatClient por defecto.
 
 ## Uso
-* Una vez iniciado el servidor podemos usar el comando ``create user user [username] [password]`` para crear un nuevo usuario de la siguiente forma:
+* Una vez iniciado el servidor podemos usar el comando ``create user [username] [password]`` para crear un nuevo usuario de la siguiente forma:
  
   ![alt text](https://i.imgur.com/6PSUkmU.png) 
 
@@ -46,5 +46,5 @@ Ejemplo de como crear un chat en java utilizando sockets
 * Contraseña
 
 
-## License
+## Descargalo
 [Version lista para usar](http://www.mediafire.com/file/q87ei3zd1huqlh5/Java-Chat.rar/file)
