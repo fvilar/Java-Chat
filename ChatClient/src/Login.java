@@ -119,7 +119,7 @@ public class Login extends javax.swing.JFrame {
 
         jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextField3.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 220, 235)), javax.swing.BorderFactory.createEmptyBorder(8, 10, 8, 10)));
-        jTextField3.setText("5000");
+        jTextField3.setText("2000");
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
